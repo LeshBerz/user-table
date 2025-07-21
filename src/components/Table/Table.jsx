@@ -1,3 +1,4 @@
+// /src/components/Table/Table.jsx
 import { useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import usersStore from '../../stores/users';
@@ -26,7 +27,7 @@ function Table({ users = [] }) {
 
   const handleMouseDown = (e, column) => {
     startXRef.current = e.clientX;
-    startWidthRef.current = usersStore.columnWidths[column] || 100; // Fallback на 100px
+    startWidthRef.current = usersStore.columnWidths[column] || 100;
     columnRef.current = column;
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
@@ -35,7 +36,7 @@ function Table({ users = [] }) {
   const handleMouseMove = (e) => {
     if (startXRef.current !== null && startWidthRef.current !== null) {
       const delta = e.clientX - startXRef.current;
-      const newWidth = Math.max(50, startWidthRef.current + delta); // Минимальная ширина 50px
+      const newWidth = Math.max(50, startWidthRef.current + delta);
       usersStore.setColumnWidth(columnRef.current, newWidth);
     }
   };
@@ -52,28 +53,28 @@ function Table({ users = [] }) {
     <table className={styles.userTable}>
       <thead>
         <tr>
-          <th style={{ width: `${usersStore.columnWidths.fullName}px` }}>
-            ФИО {getSortIndicator('firstName')}
+          <th style={{ width: `${usersStore.columnWidths.fullName}px` }} onClick={() => handleSort('lastName')}>
+            ФИО {getSortIndicator('lastName')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'fullName')}
             />
           </th>
-          <th style={{ width: `${usersStore.columnWidths.age}px` }}>
+          <th style={{ width: `${usersStore.columnWidths.age}px` }} onClick={() => handleSort('age')}>
             Возраст {getSortIndicator('age')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'age')}
             />
           </th>
-          <th style={{ width: `${usersStore.columnWidths.gender}px` }}>
+          <th style={{ width: `${usersStore.columnWidths.gender}px` }} onClick={() => handleSort('gender')}>
             Пол {getSortIndicator('gender')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'gender')}
             />
           </th>
-          <th style={{ width: `${usersStore.columnWidths.phone}px` }}>
+          <th style={{ width: `${usersStore.columnWidths.phone}px` }} onClick={() => handleSort('phone')}>
             Телефон {getSortIndicator('phone')}
             <span
               className={styles.resizeHandle}

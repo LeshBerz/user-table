@@ -9,7 +9,7 @@
   padding: 10px;
   border: 1px solid var(--text-color);
   text-align: left;
-  min-width: 50px; /* Минимальная ширина колонок */
+  min-width: 50px;
 }
 
 .userTable th {
@@ -39,8 +39,13 @@
   background-color: var(--text-color, #000000);
   cursor: col-resize;
   z-index: 10;
+  pointer-events: auto;
 }
 
 .resizeHandle:hover {
   background-color: var(--text-color-hover, #ff0000);
+}
+
+.userTable th:not(.resizeHandle) {
+  pointer-events: auto;
 }

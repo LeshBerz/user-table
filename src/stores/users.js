@@ -86,7 +86,7 @@ class UsersStore {
     if (this.retryCount < 3) {
       this.retryCount += 1;
       this.error = null;
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Задержка 1 сек
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       this.loadUsers();
     }
   };
@@ -100,10 +100,22 @@ class UsersStore {
       } else {
         data = await fetchUsers(this.page, this.limit, this.sortBy, this.sortOrder);
       }
-      this.users = data.users;
+      let users = data.users;
+      // Клиентская сортировка для ФИО
+      if (this.sortBy === 'lastName' && this.sortOrder) {
+        users = [...users].sort((a, b) => {
+          const aFullName = `${a.lastName} ${a.firstName} ${a.maidenName}`.toLowerCase();
+          const bFullName = `${b.lastName} ${b.firstName} ${b.maidenName}`.toLowerCase();
+          if (this.sortOrder === 'asc') {
+            return aFullName.localeCompare(bFullName);
+          }
+          return bFullName.localeCompare(aFullName);
+        });
+      }
+      this.users = users;
       this.total = data.total;
       this.error = null;
-      this.retryCount = 0; // Сбрасываем счетчик при успехе
+      this.retryCount = 0;
     } catch (err) {
       this.error = err.message || 'Произошла ошибка при загрузке данных';
     } finally {
