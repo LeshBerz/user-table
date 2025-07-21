@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import usersStore from '../../stores/users';
 import './Table.css';
 
-function Table({ users }) {
+function Table({ users = [] }) {
   const handleSort = (field) => {
     usersStore.setSort(field);
   };
@@ -12,6 +12,10 @@ function Table({ users }) {
       return usersStore.sortOrder === 'asc' ? ' ↑' : ' ↓';
     }
     return '';
+  };
+
+  const handleRowClick = (user) => {
+    usersStore.openModal(user);
   };
 
   return (
@@ -37,7 +41,7 @@ function Table({ users }) {
       </thead>
       <tbody>
         {users.map((user) => (
-          <tr key={user.id}>
+          <tr key={user.id} onClick={() => handleRowClick(user)} className="user-row">
             <td>{`${user.lastName} ${user.firstName} ${user.maidenName}`}</td>
             <td>{user.age}</td>
             <td>{user.gender}</td>

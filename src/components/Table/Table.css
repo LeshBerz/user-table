@@ -19,3 +19,11 @@
 .user-table th:hover {
   background-color: var(--bg-color-hover, #f0f0f0);
 }
+
+.user-row {
+  cursor: pointer;
+}
+
+.user-row:hover {
+  background-color: var(--bg-color-hover, #e0e0e0);
+}

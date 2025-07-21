@@ -17,9 +17,23 @@ class UsersStore {
     country: '',
     city: '',
   };
+  selectedUser = null;
+  columnWidths = {
+    fullName: 200,
+    age: 100,
+    gender: 100,
+    phone: 150,
+    email: 200,
+    country: 150,
+    city: 150,
+  };
 
   constructor() {
     makeAutoObservable(this);
+    const savedWidths = localStorage.getItem('columnWidths');
+    if (savedWidths) {
+      this.columnWidths = { ...this.columnWidths, ...JSON.parse(savedWidths) };
+    }
   }
 
   setSort(field) {
@@ -41,13 +55,30 @@ class UsersStore {
 
   setFilters({ search, age, gender, country, city }) {
     this.filters = { search, age, gender, country, city };
-    this.page = 1; // Сбрасываем страницу при изменении фильтров
+    this.page = 1;
     this.loadUsers();
   }
 
   setPage(page) {
     this.page = page;
     this.loadUsers();
+  }
+
+  openModal = (user) => {
+    console.log('Opening modal for user:', user);
+    this.selectedUser = user;
+  };
+
+  closeModal = () => {
+    console.log('Closing modal, setting selectedUser to null');
+    this.selectedUser = null;
+  };
+
+  setColumnWidth(column, width) {
+    if (width >= 50) {
+      this.columnWidths[column] = width;
+      localStorage.setItem('columnWidths', JSON.stringify(this.columnWidths));
+    }
   }
 
   async loadUsers() {

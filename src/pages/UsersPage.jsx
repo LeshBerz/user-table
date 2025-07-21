@@ -4,6 +4,7 @@ import usersStore from '../stores/users';
 import Table from '../components/Table/Table';
 import Filters from '../components/Filters/Filters';
 import Pagination from '../components/Pagination/Pagination';
+import Modal from '../components/Modal/Modal';
 
 function UsersPage() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function UsersPage() {
           <Pagination />
         </>
       )}
+      <Modal />
     </div>
   );
 }
