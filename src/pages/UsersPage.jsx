@@ -1,24 +1,20 @@
-import { Observer } from "mobx-react-lite";
-import usersStore from "../stores/users";
-import Table from "../components/Table/Table";
+// /src/pages/UsersPage.jsx
+import { useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
+import usersStore from '../stores/users';
+import Table from '../components/Table/Table';
 
-function UsersPage(){
-    return(
-        <Observer>
-            {() => (
-                <div>
-                    {usersStore.error && <div> Error: {usersStore.error}</div>}
-                    {usersStore.loading ? (
-                        <div>
-                            <div>Loading...</div>
-                        </div>
-                ) : (
-                    <Table users = {usersStore.users} />
-                    )}
-                </div>
-            )}
-        </Observer>
-    )
+function UsersPage() {
+  useEffect(() => {
+    usersStore.loadUsers();
+  }, []);
+
+  return (
+    <div>
+      {usersStore.error && <div>Ошибка: {usersStore.error}</div>}
+      {usersStore.loading ? <div>Загрузка...</div> : <Table users={usersStore.users} />}
+    </div>
+  );
 }
 
-export default UsersPage;
+export default observer(UsersPage);

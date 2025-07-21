@@ -10,3 +10,12 @@
   border: 1px solid var(--text-color);
   text-align: left;
 }
+
+.user-table th {
+  cursor: pointer;
+  user-select: none;
+}
+
+.user-table th:hover {
+  background-color: var(--bg-color-hover, #f0f0f0);
+}

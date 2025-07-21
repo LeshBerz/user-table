@@ -1,14 +1,35 @@
+import { observer } from 'mobx-react-lite';
+import usersStore from '../../stores/users';
 import './Table.css';
 
 function Table({ users }) {
+  const handleSort = (field) => {
+    usersStore.setSort(field);
+  };
+
+  const getSortIndicator = (field) => {
+    if (usersStore.sortBy === field) {
+      return usersStore.sortOrder === 'asc' ? ' ↑' : ' ↓';
+    }
+    return '';
+  };
+
   return (
     <table className="user-table">
       <thead>
         <tr>
-          <th>ФИО</th>
-          <th>Возраст</th>
-          <th>Пол</th>
-          <th>Телефон</th>
+          <th onClick={() => handleSort('firstName')}>
+            ФИО {getSortIndicator('firstName')}
+          </th>
+          <th onClick={() => handleSort('age')}>
+            Возраст {getSortIndicator('age')}
+          </th>
+          <th onClick={() => handleSort('gender')}>
+            Пол {getSortIndicator('gender')}
+          </th>
+          <th onClick={() => handleSort('phone')}>
+            Телефон {getSortIndicator('phone')}
+          </th>
           <th>Email</th>
           <th>Страна</th>
           <th>Город</th>
@@ -31,4 +52,4 @@ function Table({ users }) {
   );
 }
 
-export default Table;
+export default observer(Table);

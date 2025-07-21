@@ -1,6 +1,6 @@
 export const fetchUsers = async (page, limit, sortBy, sortOrder) => {
   
-    const skip = (page - 1) * limit;
+  const skip = (page - 1) * limit;
   let url = `https://dummyjson.com/users?limit=${limit}&skip=${skip}`;
   
   if (sortBy && sortOrder) {
