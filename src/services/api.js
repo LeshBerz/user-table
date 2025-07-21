@@ -4,11 +4,24 @@ export const fetchUsers = async (page, limit, sortBy, sortOrder) => {
   if (sortBy && sortOrder) {
     url += `&sortBy=${sortBy}&order=${sortOrder}`;
   }
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Не удалось загрузить данные пользователей');
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Ресурс не найден (404)');
+      } else if (response.status >= 500) {
+        throw new Error('Ошибка сервера (500+)');
+      } else {
+        throw new Error(`HTTP ошибка: ${response.status}`);
+      }
+    }
+    return response.json();
+  } catch (err) {
+    if (err.name === 'TypeError') {
+      throw new Error('Ошибка сети: проверьте подключение к интернету');
+    }
+    throw err;
   }
-  return response.json();
 };
 
 export const searchUsers = async (filters, page, limit, sortBy, sortOrder) => {
@@ -20,24 +33,34 @@ export const searchUsers = async (filters, page, limit, sortBy, sortOrder) => {
   if (sortBy && sortOrder) {
     url += `&sortBy=${sortBy}&order=${sortOrder}`;
   }
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error('Не удалось выполнить поиск');
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('Пользователи не найдены (404)');
+      } else if (response.status >= 500) {
+        throw new Error('Ошибка сервера (500+)');
+      } else {
+        throw new Error(`HTTP ошибка: ${response.status}`);
+      }
+    }
+    let data = await response.json();
+    if (filters.age || filters.gender || filters.country || filters.city) {
+      data.users = data.users.filter((user) => {
+        return (
+          (!filters.age || user.age === Number(filters.age)) &&
+          (!filters.gender || user.gender === filters.gender) &&
+          (!filters.country || user.address.country.toLowerCase().includes(filters.country.toLowerCase())) &&
+          (!filters.city || user.address.city.toLowerCase().includes(filters.city.toLowerCase()))
+        );
+      });
+      data.total = data.users.length;
+    }
+    return data;
+  } catch (err) {
+    if (err.name === 'TypeError') {
+      throw new Error('Ошибка сети: проверьте подключение к интернету');
+    }
+    throw err;
   }
-  let data = await response.json();
-
-  // Клиентская фильтрация для полей, не поддерживаемых API
-  if (filters.age || filters.gender || filters.country || filters.city) {
-    data.users = data.users.filter((user) => {
-      return (
-        (!filters.age || user.age === Number(filters.age)) &&
-        (!filters.gender || user.gender === filters.gender) &&
-        (!filters.country || user.address.country.toLowerCase().includes(filters.country.toLowerCase())) &&
-        (!filters.city || user.address.city.toLowerCase().includes(filters.city.toLowerCase()))
-      );
-    });
-    data.total = data.users.length; // Обновляем total для клиентской фильтрации
-  }
-
-  return data;
 };

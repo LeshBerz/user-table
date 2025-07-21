@@ -5,6 +5,7 @@ import Table from '../components/Table/Table';
 import Filters from '../components/Filters/Filters';
 import Pagination from '../components/Pagination/Pagination';
 import Modal from '../components/Modal/Modal';
+import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
 
 function UsersPage() {
   useEffect(() => {
@@ -14,7 +15,7 @@ function UsersPage() {
   return (
     <div>
       <Filters />
-      {usersStore.error && <div>Ошибка: {usersStore.error}</div>}
+      <ErrorMessage />
       {usersStore.loading ? (
         <div>Загрузка...</div>
       ) : (

@@ -27,6 +27,7 @@ class UsersStore {
     country: 150,
     city: 150,
   };
+  retryCount = 0;
 
   constructor() {
     makeAutoObservable(this);
@@ -81,9 +82,13 @@ class UsersStore {
     }
   };
 
-  retryLoadUsers = () => {
-    this.error = null;
-    this.loadUsers();
+  retryLoadUsers = async () => {
+    if (this.retryCount < 3) {
+      this.retryCount += 1;
+      this.error = null;
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Задержка 1 сек
+      this.loadUsers();
+    }
   };
 
   async loadUsers() {
@@ -98,6 +103,7 @@ class UsersStore {
       this.users = data.users;
       this.total = data.total;
       this.error = null;
+      this.retryCount = 0; // Сбрасываем счетчик при успехе
     } catch (err) {
       this.error = err.message || 'Произошла ошибка при загрузке данных';
     } finally {
