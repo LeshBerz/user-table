@@ -45,6 +45,11 @@ class UsersStore {
     this.loadUsers();
   }
 
+  setPage(page) {
+    this.page = page;
+    this.loadUsers();
+  }
+
   async loadUsers() {
     this.loading = true;
     try {

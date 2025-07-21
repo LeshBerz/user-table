@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import usersStore from '../stores/users';
 import Table from '../components/Table/Table';
 import Filters from '../components/Filters/Filters';
+import Pagination from '../components/Pagination/Pagination';
 
 function UsersPage() {
   useEffect(() => {
@@ -13,7 +14,14 @@ function UsersPage() {
     <div>
       <Filters />
       {usersStore.error && <div>Ошибка: {usersStore.error}</div>}
-      {usersStore.loading ? <div>Загрузка...</div> : <Table users={usersStore.users || []} />}
+      {usersStore.loading ? (
+        <div>Загрузка...</div>
+      ) : (
+        <>
+          <Table users={usersStore.users || []} />
+          <Pagination />
+        </>
+      )}
     </div>
   );
 }

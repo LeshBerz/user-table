@@ -25,7 +25,7 @@ export const searchUsers = async (filters, page, limit, sortBy, sortOrder) => {
     throw new Error('Не удалось выполнить поиск');
   }
   let data = await response.json();
-  
+
   // Клиентская фильтрация для полей, не поддерживаемых API
   if (filters.age || filters.gender || filters.country || filters.city) {
     data.users = data.users.filter((user) => {
@@ -38,6 +38,6 @@ export const searchUsers = async (filters, page, limit, sortBy, sortOrder) => {
     });
     data.total = data.users.length; // Обновляем total для клиентской фильтрации
   }
-  
+
   return data;
 };
