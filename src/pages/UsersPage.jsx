@@ -6,6 +6,7 @@ import Filters from '../components/Filters/Filters';
 import Pagination from '../components/Pagination/Pagination';
 import Modal from '../components/Modal/Modal';
 import ErrorMessage from '../components/ErrorMessage/ErrorMessage';
+import ThemeToggle from '../components/ThemeToggle/ThemeToggle';
 
 function UsersPage() {
   useEffect(() => {
@@ -13,7 +14,10 @@ function UsersPage() {
   }, []);
 
   return (
-    <div>
+    <div className="app">
+      <div style={{ marginBottom: '20px' }}>
+        <ThemeToggle />
+      </div>
       <Filters />
       <ErrorMessage />
       {usersStore.loading ? (
