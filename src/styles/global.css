@@ -3,6 +3,11 @@
   --text-color: #000000;
   --bg-color-hover: #f0f0f0;
   --text-color-hover: #ff0000;
+  --error-bg: #ffe6e6;
+  --error-text: #cc0000;
+  --button-bg: #007bff;
+  --button-text: #ffffff;
+  --button-bg-hover: #0056b3;
 }
 
 [data-theme='dark'] {
@@ -10,6 +15,11 @@
   --text-color: #ffffff;
   --bg-color-hover: #333333;
   --text-color-hover: #ff5555;
+  --error-bg: #4d0000;
+  --error-text: #ff9999;
+  --button-bg: #3399ff;
+  --button-text: #ffffff;
+  --button-bg-hover: #1a73e8;
 }
 
 body {

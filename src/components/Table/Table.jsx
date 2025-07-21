@@ -1,8 +1,14 @@
+import { useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import usersStore from '../../stores/users';
-import './Table.css';
+import styles from './Table.module.css';
 
 function Table({ users = [] }) {
+  const resizeRef = useRef(null);
+  const startXRef = useRef(null);
+  const startWidthRef = useRef(null);
+  const columnRef = useRef(null);
+
   const handleSort = (field) => {
     usersStore.setSort(field);
   };
@@ -18,30 +24,92 @@ function Table({ users = [] }) {
     usersStore.openModal(user);
   };
 
+  const handleMouseDown = (e, column) => {
+    startXRef.current = e.clientX;
+    startWidthRef.current = usersStore.columnWidths[column] || 100; // Fallback на 100px
+    columnRef.current = column;
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  const handleMouseMove = (e) => {
+    if (startXRef.current !== null && startWidthRef.current !== null) {
+      const delta = e.clientX - startXRef.current;
+      const newWidth = Math.max(50, startWidthRef.current + delta); // Минимальная ширина 50px
+      usersStore.setColumnWidth(columnRef.current, newWidth);
+    }
+  };
+
+  const handleMouseUp = () => {
+    startXRef.current = null;
+    startWidthRef.current = null;
+    columnRef.current = null;
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+  };
+
   return (
-    <table className="user-table">
+    <table className={styles.userTable}>
       <thead>
         <tr>
-          <th onClick={() => handleSort('firstName')}>
+          <th style={{ width: `${usersStore.columnWidths.fullName}px` }}>
             ФИО {getSortIndicator('firstName')}
+            <span
+              className={styles.resizeHandle}
+              onMouseDown={(e) => handleMouseDown(e, 'fullName')}
+            />
           </th>
-          <th onClick={() => handleSort('age')}>
+          <th style={{ width: `${usersStore.columnWidths.age}px` }}>
             Возраст {getSortIndicator('age')}
+            <span
+              className={styles.resizeHandle}
+              onMouseDown={(e) => handleMouseDown(e, 'age')}
+            />
           </th>
-          <th onClick={() => handleSort('gender')}>
+          <th style={{ width: `${usersStore.columnWidths.gender}px` }}>
             Пол {getSortIndicator('gender')}
+            <span
+              className={styles.resizeHandle}
+              onMouseDown={(e) => handleMouseDown(e, 'gender')}
+            />
           </th>
-          <th onClick={() => handleSort('phone')}>
+          <th style={{ width: `${usersStore.columnWidths.phone}px` }}>
             Телефон {getSortIndicator('phone')}
+            <span
+              className={styles.resizeHandle}
+              onMouseDown={(e) => handleMouseDown(e, 'phone')}
+            />
           </th>
-          <th>Email</th>
-          <th>Страна</th>
-          <th>Город</th>
+          <th style={{ width: `${usersStore.columnWidths.email}px` }}>
+            Email
+            <span
+              className={styles.resizeHandle}
+              onMouseDown={(e) => handleMouseDown(e, 'email')}
+            />
+          </th>
+          <th style={{ width: `${usersStore.columnWidths.country}px` }}>
+            Страна
+            <span
+              className={styles.resizeHandle}
+              onMouseDown={(e) => handleMouseDown(e, 'country')}
+            />
+          </th>
+          <th style={{ width: `${usersStore.columnWidths.city}px` }}>
+            Город
+            <span
+              className={styles.resizeHandle}
+              onMouseDown={(e) => handleMouseDown(e, 'city')}
+            />
+          </th>
         </tr>
       </thead>
       <tbody>
         {users.map((user) => (
-          <tr key={user.id} onClick={() => handleRowClick(user)} className="user-row">
+          <tr
+            key={user.id}
+            onClick={() => handleRowClick(user)}
+            className={styles.userRow}
+          >
             <td>{`${user.lastName} ${user.firstName} ${user.maidenName}`}</td>
             <td>{user.age}</td>
             <td>{user.gender}</td>

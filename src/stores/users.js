@@ -74,12 +74,17 @@ class UsersStore {
     this.selectedUser = null;
   };
 
-  setColumnWidth(column, width) {
+  setColumnWidth = (column, width) => {
     if (width >= 50) {
       this.columnWidths[column] = width;
       localStorage.setItem('columnWidths', JSON.stringify(this.columnWidths));
     }
-  }
+  };
+
+  retryLoadUsers = () => {
+    this.error = null;
+    this.loadUsers();
+  };
 
   async loadUsers() {
     this.loading = true;
@@ -94,7 +99,7 @@ class UsersStore {
       this.total = data.total;
       this.error = null;
     } catch (err) {
-      this.error = err.message;
+      this.error = err.message || 'Произошла ошибка при загрузке данных';
     } finally {
       this.loading = false;
     }
