@@ -1,16 +1,18 @@
-// /src/components/Table/Table.jsx
 import { useRef } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import usersStore from '../../stores/users';
 import styles from './Table.module.css';
 
 function Table({ users = [] }) {
+  const { t } = useTranslation();
   const resizeRef = useRef(null);
   const startXRef = useRef(null);
   const startWidthRef = useRef(null);
   const columnRef = useRef(null);
 
   const handleSort = (field) => {
+    console.log('Sorting triggered for field:', field);
     usersStore.setSort(field);
   };
 
@@ -22,10 +24,12 @@ function Table({ users = [] }) {
   };
 
   const handleRowClick = (user) => {
+    console.log('Row clicked, opening modal for user:', user.id);
     usersStore.openModal(user);
   };
 
   const handleMouseDown = (e, column) => {
+    console.log('Resize started for column:', column);
     startXRef.current = e.clientX;
     startWidthRef.current = usersStore.columnWidths[column] || 100;
     columnRef.current = column;
@@ -42,6 +46,7 @@ function Table({ users = [] }) {
   };
 
   const handleMouseUp = () => {
+    console.log('Resize ended');
     startXRef.current = null;
     startWidthRef.current = null;
     columnRef.current = null;
@@ -54,49 +59,49 @@ function Table({ users = [] }) {
       <thead>
         <tr>
           <th style={{ width: `${usersStore.columnWidths.fullName}px` }} onClick={() => handleSort('lastName')}>
-            ФИО {getSortIndicator('lastName')}
+            {t('table.fullName')} {getSortIndicator('lastName')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'fullName')}
             />
           </th>
           <th style={{ width: `${usersStore.columnWidths.age}px` }} onClick={() => handleSort('age')}>
-            Возраст {getSortIndicator('age')}
+            {t('table.age')} {getSortIndicator('age')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'age')}
             />
           </th>
           <th style={{ width: `${usersStore.columnWidths.gender}px` }} onClick={() => handleSort('gender')}>
-            Пол {getSortIndicator('gender')}
+            {t('table.gender')} {getSortIndicator('gender')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'gender')}
             />
           </th>
           <th style={{ width: `${usersStore.columnWidths.phone}px` }} onClick={() => handleSort('phone')}>
-            Телефон {getSortIndicator('phone')}
+            {t('table.phone')} {getSortIndicator('phone')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'phone')}
             />
           </th>
           <th style={{ width: `${usersStore.columnWidths.email}px` }}>
-            Email
+            {t('table.email')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'email')}
             />
           </th>
           <th style={{ width: `${usersStore.columnWidths.country}px` }}>
-            Страна
+            {t('table.country')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'country')}
             />
           </th>
           <th style={{ width: `${usersStore.columnWidths.city}px` }}>
-            Город
+            {t('table.city')}
             <span
               className={styles.resizeHandle}
               onMouseDown={(e) => handleMouseDown(e, 'city')}

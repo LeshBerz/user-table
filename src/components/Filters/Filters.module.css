@@ -1,0 +1,26 @@
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input,
+.filters select,
+.filters button {
+  padding: 8px;
+  border: 1px solid var(--text-color, #000000);
+  border-radius: 4px;
+  background-color: var(--bg-color, #ffffff);
+  color: var(--text-color, #000000);
+}
+
+.filters button {
+  background-color: var(--button-bg, #007bff);
+  color: var(--button-text, #ffffff);
+  border: none;
+  cursor: pointer;
+}
+
+.filters button:hover {
+  background-color: var(--button-bg-hover, #0056b3);
+}

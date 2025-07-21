@@ -1,8 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import usersStore from '../../stores/users';
-import './Pagination.css';
+import styles from './Pagination.module.css';
 
 function Pagination() {
+  const { t } = useTranslation();
   const { page, limit, total } = usersStore;
   const totalPages = Math.ceil(total / limit);
 
@@ -41,24 +43,33 @@ function Pagination() {
 
   return (
     <div className="pagination">
-      <button onClick={handlePrev} disabled={page === 1}>
-        Предыдущая
+      <button 
+        onClick={handlePrev}
+        disabled={page === 1}
+        className={styles.button}
+        >
+        {t('pagination.previous')}
       </button>
       {getPageNumbers().map((pageNum) => (
         <button
           key={pageNum}
           onClick={() => handlePageClick(pageNum)}
-          className={page === pageNum ? 'active' : ''}
+          className={styles.page}
         >
           {pageNum}
         </button>
       ))}
-      <button onClick={handleNext} disabled={page === totalPages}>
-        Следующая
+      <button 
+        onClick={handleNext} 
+        disabled={page === totalPages}
+        className={styles.button}
+        >
+        {t('pagination.next')}
       </button>
-      <span>
-        Страница {page} из {totalPages}
-      </span>
+      <div>
+        {t('pagination.page')} {page} {t('pagination.of')}   {totalPages}
+      </div>
+      
     </div>
   );
 }

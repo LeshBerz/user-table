@@ -1,4 +1,4 @@
-.modal-overlay {
+.modalOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -11,7 +11,7 @@
   z-index: 1000;
 }
 
-.modal-content {
+.modalContent {
   background-color: var(--bg-color, #ffffff);
   color: var(--text-color, #000000);
   padding: 20px;
@@ -24,7 +24,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.modal-close {
+.modalClose {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -36,11 +36,11 @@
   transition: color 0.2s;
 }
 
-.modal-close:hover {
+.modalClose:hover {
   color: var(--text-color-hover, #ff0000);
 }
 
-.modal-avatar {
+.modalAvatar {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -48,27 +48,27 @@
   object-fit: cover;
 }
 
-.modal-body {
+.modalBody {
   text-align: left;
 }
 
-.modal-body h2 {
+.modalBody h2 {
   margin: 0 0 20px;
   font-size: 24px;
 }
 
-.modal-body p {
+.modalBody p {
   margin: 10px 0;
   font-size: 16px;
 }
 
-.modal-body ul {
+.modalBody ul {
   list-style: none;
   padding: 0;
   margin: 10px 0;
 }
 
-.modal-body li {
+.modalBody li {
   margin: 5px 0;
   font-size: 16px;
 }

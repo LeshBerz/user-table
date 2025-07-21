@@ -1,73 +1,110 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import usersStore from '../../stores/users';
-import './Modal.css';
+import styles from './Modal.module.css';
 
 function Modal() {
-  const { selectedUser, closeModal } = usersStore;
+    const { t } = useTranslation();
+    const { selectedUser, closeModal } = usersStore;
 
-  useEffect(() => {
-    console.log('Modal opened, selectedUser:', selectedUser); // Отладка
-    const handleEsc = (event) => {
-      if (event.key === 'Escape') {
-        console.log('Esc pressed, closing modal'); // Отладка
-        closeModal();
-      }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => {
-      console.log('Cleaning up Esc listener'); // Отладка
-      window.removeEventListener('keydown', handleEsc);
-    };
-  }, [closeModal]);
+    useEffect(() => {
+        const handleEsc = (event) => {
+            if (event.key === 'Escape') {
+                console.log('Esc pressed, closing modal');
+                closeModal();
+            }
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => {
+            console.log('Cleaning up Esc listener');
+            window.removeEventListener('keydown', handleEsc);
+        };
+    }, [closeModal]);
 
-  if (!selectedUser) {
-    console.log('Modal not rendered, selectedUser is null'); // Отладка
-    return null;
-  }
+    if (!selectedUser) {
+        console.log('Modal not rendered, selectedUser is null');
+        return null;
+    }
 
-  return (
-    <div className="modal-overlay" onClick={() => {
-      console.log('Overlay clicked, closing modal'); // Отладка
-      closeModal();
-    }}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button
-          className="modal-close"
-          onClick={() => {
-            console.log('Close button clicked'); // Отладка
-            closeModal();
-          }}
-          aria-label="Закрыть"
+    const hasAddress = selectedUser.address && typeof selectedUser.address === 'object';
+    const safeAddress = hasAddress ? selectedUser.address : {};
+
+    return (
+        <div
+            className={styles.modalOverlay}
+            onClick={() => {
+                console.log('Overlay clicked, closing modal');
+                closeModal();
+            }}
         >
-          ×
-        </button>
-        <div className="modal-body">
-          <img
-            src={selectedUser.image}
-            alt={`${selectedUser.firstName} ${selectedUser.lastName}`}
-            className="modal-avatar"
-          />
-          <h2>
-            {selectedUser.lastName} {selectedUser.firstName} {selectedUser.maidenName}
-          </h2>
-          <p><strong>Возраст:</strong> {selectedUser.age}</p>
-          <p><strong>Пол:</strong> {selectedUser.gender}</p>
-          <p><strong>Телефон:</strong> {selectedUser.phone}</p>
-          <p><strong>Email:</strong> {selectedUser.email}</p>
-          <p><strong>Адрес:</strong></p>
-          <ul>
-            <li><strong>Страна:</strong> {selectedUser.address.country}</li>
-            <li><strong>Город:</strong> {selectedUser.address.city}</li>
-            <li><strong>Улица:</strong> {selectedUser.address.address}</li>
-            <li><strong>Почтовый индекс:</strong> {selectedUser.address.postalCode}</li>
-          </ul>
-          <p><strong>Рост:</strong> {selectedUser.height} см</p>
-          <p><strong>Вес:</strong> {selectedUser.weight} кг</p>
+            <div
+                className={styles.modalContent}
+                onClick={(e) => e.stopPropagation()}
+            >
+                <button
+                    className={styles.modalClose}
+                    onClick={() => {
+                        console.log('Close button clicked');
+                        closeModal();
+                    }}
+                    aria-label={t('modal.close')}
+                >
+                    ×
+                </button>
+                <div className={styles.modalBody}>
+                    {selectedUser.image ? (
+                        <img
+                            src={selectedUser.image}
+                            alt={`${selectedUser.firstName || ''} ${selectedUser.lastName || ''}`}
+                            className={styles.modalAvatar}
+                        />
+                    ) : (
+                        <p>{t('modal.avatarMissing')}</p>
+                    )}
+                    <h2>
+                        {selectedUser.lastName || ''} {selectedUser.firstName || ''}{' '}
+                        {selectedUser.maidenName || ''}
+                    </h2>
+                    <p>
+                        <strong>{t('modal.age')}:</strong> {selectedUser.age || t('modal.notSpecified')}
+                    </p>
+                    <p>
+                        <strong>{t('modal.gender')}:</strong> {selectedUser.gender || t('modal.notSpecified')}
+                    </p>
+                    <p>
+                        <strong>{t('modal.phone')}:</strong> {selectedUser.phone || t('modal.notSpecified')}
+                    </p>
+                    <p>
+                        <strong>{t('modal.email')}:</strong> {selectedUser.email || t('modal.notSpecified')}
+                    </p>
+                    <p>
+                        <strong>{t('modal.address')}:</strong>
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>{t('modal.country')}:</strong> {safeAddress.country || t('modal.notSpecified')}
+                        </li>
+                        <li>
+                            <strong>{t('modal.city')}:</strong> {safeAddress.city || t('modal.notSpecified')}
+                        </li>
+                        <li>
+                            <strong>{t('modal.street')}:</strong> {safeAddress.address || t('modal.notSpecified')}
+                        </li>
+                        <li>
+                            <strong>{t('modal.postalCode')}:</strong> {safeAddress.postalCode || t('modal.notSpecified')}
+                        </li>
+                    </ul>
+                    <p>
+                        <strong>{t('modal.height')}:</strong> {selectedUser.height ? `${selectedUser.height} ${t('modal.cm')}` : t('modal.notSpecified')}
+                    </p>
+                    <p>
+                        <strong>{t('modal.weight')}:</strong> {selectedUser.weight ? `${selectedUser.weight} ${t('modal.kg')}` : t('modal.notSpecified')}
+                    </p>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default observer(Modal);

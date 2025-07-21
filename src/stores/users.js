@@ -38,6 +38,7 @@ class UsersStore {
   }
 
   setSort(field) {
+    console.log('setSort called with field:', field);
     if (this.sortBy === field) {
       if (this.sortOrder === 'asc') {
         this.sortOrder = 'desc';
@@ -51,6 +52,7 @@ class UsersStore {
       this.sortBy = field;
       this.sortOrder = 'asc';
     }
+    console.log('New sort state:', { sortBy: this.sortBy, sortOrder: this.sortOrder });
     this.loadUsers();
   }
 
@@ -94,6 +96,7 @@ class UsersStore {
   async loadUsers() {
     this.loading = true;
     try {
+      console.log('loadUsers called with:', { page: this.page, limit: this.limit, sortBy: this.sortBy, sortOrder: this.sortOrder });
       let data;
       if (this.filters.search || this.filters.age || this.filters.gender || this.filters.country || this.filters.city) {
         data = await searchUsers(this.filters, this.page, this.limit, this.sortBy, this.sortOrder);
@@ -101,8 +104,8 @@ class UsersStore {
         data = await fetchUsers(this.page, this.limit, this.sortBy, this.sortOrder);
       }
       let users = data.users;
-      // Клиентская сортировка для ФИО
       if (this.sortBy === 'lastName' && this.sortOrder) {
+        console.log('Applying client-side sorting for fullName');
         users = [...users].sort((a, b) => {
           const aFullName = `${a.lastName} ${a.firstName} ${a.maidenName}`.toLowerCase();
           const bFullName = `${b.lastName} ${b.firstName} ${b.maidenName}`.toLowerCase();
@@ -117,7 +120,8 @@ class UsersStore {
       this.error = null;
       this.retryCount = 0;
     } catch (err) {
-      this.error = err.message || 'Произошла ошибка при загрузке данных';
+      this.error = err.message;
+      console.error('loadUsers error:', err);
     } finally {
       this.loading = false;
     }

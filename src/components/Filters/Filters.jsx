@@ -1,55 +1,66 @@
 import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { useTranslation } from 'react-i18next';
 import usersStore from '../../stores/users';
-import './Filters.css';
+import styles from './Filters.module.css';
 
 function Filters() {
-  const [search, setSearch] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
-  const [country, setCountry] = useState('');
-  const [city, setCity] = useState('');
+  const { t } = useTranslation();
+  const [filters, setFilters] = useState({
+    search: '',
+    age: '',
+    gender: '',
+    country: '',
+    city: '',
+  });
 
-  const handleSearch = () => {
-    usersStore.setFilters({ search, age, gender, country, city });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    usersStore.setFilters(filters);
   };
 
   return (
-    <div className="filters">
+    <form className={styles.filters} onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Поиск по ФИО"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        onBlur={handleSearch}
+        name="search"
+        value={filters.search}
+        onChange={handleChange}
+        placeholder={t('filters.search')}
       />
       <input
         type="number"
-        placeholder="Возраст"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-        onBlur={handleSearch}
+        name="age"
+        value={filters.age}
+        onChange={handleChange}
+        placeholder={t('filters.age')}
       />
-      <select value={gender} onChange={(e) => setGender(e.target.value)} onBlur={handleSearch}>
-        <option value="">Пол</option>
-        <option value="male">Мужской</option>
-        <option value="female">Женский</option>
+      <select name="gender" value={filters.gender} onChange={handleChange}>
+        <option value="">{t('filters.gender')}</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
       </select>
       <input
         type="text"
-        placeholder="Страна"
-        value={country}
-        onChange={(e) => setCountry(e.target.value)}
-        onBlur={handleSearch}
+        name="country"
+        value={filters.country}
+        onChange={handleChange}
+        placeholder={t('filters.country')}
       />
       <input
         type="text"
-        placeholder="Город"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        onBlur={handleSearch}
+        name="city"
+        value={filters.city}
+        onChange={handleChange}
+        placeholder={t('filters.city')}
       />
-    </div>
+      <button type="submit">{t('filters.apply')}</button>
+    </form>
   );
 }
 
