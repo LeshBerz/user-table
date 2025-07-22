@@ -1,36 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 :root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-  --bg-color-hover: #f0f0f0;
-  --text-color-hover: #ff0000;
-  --error-bg: #ffe6e6;
-  --error-text: #cc0000;
-  --button-bg: #007bff;
+  --bg-color: #f7fafc;
+  --text-color: #2d3748;
+  --bg-color-hover: #edf2f7;
+  --text-color-hover: #e53e3e;
+  --error-bg: #fff5f5;
+  --error-text: #c53030;
+  --button-bg: #3182ce;
   --button-text: #ffffff;
-  --button-bg-hover: #0056b3;
+  --button-bg-hover: #2b6cb0;
+  --border-color: #e2e8f0;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --modal-bg: #ffffff;
+  --modal-overlay: rgba(0, 0, 0, 0.5);
 }
 
 [data-theme='dark'] {
-  --bg-color: #1a1a1a;
-  --text-color: #ffffff;
-  --bg-color-hover: #333333;
-  --text-color-hover: #ff5555;
-  --error-bg: #4d0000;
-  --error-text: #ff9999;
-  --button-bg: #3399ff;
-  --button-text: #ffffff;
-  --button-bg-hover: #1a73e8;
+  --bg-color: #1a202c;
+  --text-color: #e2e8f0;
+  --bg-color-hover: #2d3748;
+  --text-color-hover: #f56565;
+  --error-bg: #742a2a;
+  --error-text: #feb2b2;
+  --button-bg: #63b3ed;
+  --button-text: #1a202c;
+  --button-bg-hover: #4299e1;
+  --border-color: #4a5568;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  --modal-bg: #2d3748;
+  --modal-overlay: rgba(0, 0, 0, 0.7);
 }
 
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app {
   max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.3rem;
+  }
 }

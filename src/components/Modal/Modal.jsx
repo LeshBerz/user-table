@@ -62,7 +62,7 @@ function Modal() {
                     ) : (
                         <p>{t('modal.avatarMissing')}</p>
                     )}
-                    <h2>
+                    <h2 align="center">
                         {selectedUser.lastName || ''} {selectedUser.firstName || ''}{' '}
                         {selectedUser.maidenName || ''}
                     </h2>
@@ -70,7 +70,7 @@ function Modal() {
                         <strong>{t('modal.age')}:</strong> {selectedUser.age || t('modal.notSpecified')}
                     </p>
                     <p>
-                        <strong>{t('modal.gender')}:</strong> {selectedUser.gender || t('modal.notSpecified')}
+                        <strong>{t('modal.gender')}:</strong> {selectedUser.gender? `${selectedUser.gender === 'male'? t('modal.male') : t('modal.female')}` : t('modal.notSpecified')}
                     </p>
                     <p>
                         <strong>{t('modal.phone')}:</strong> {selectedUser.phone || t('modal.notSpecified')}

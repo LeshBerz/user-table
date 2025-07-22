@@ -42,8 +42,8 @@ function Filters() {
       />
       <select name="gender" value={filters.gender} onChange={handleChange}>
         <option value="">{t('filters.gender')}</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
+        <option value="male">{t('filters.male')}</option>
+        <option value="female">{t('filters.female')}</option>
       </select>
       <input
         type="text"

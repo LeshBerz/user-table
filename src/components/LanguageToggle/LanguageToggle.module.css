@@ -1,28 +1,29 @@
 .languageToggle {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .button {
   padding: 8px 12px;
-  background-color: var(--button-bg, #007bff);
-  color: var(--button-text, #ffffff);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
 }
 
 .button:hover {
-  background-color: var(--button-bg-hover, #0056b3);
+  background-color: var(--button-bg-hover);
 }
 
 .active {
   padding: 8px 12px;
-  background-color: var(--button-bg-hover, #0056b3);
-  color: var(--button-text, #ffffff);
+  background-color: var(--button-bg-hover);
+  color: var(--button-text);
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: default;
-  font-weight: bold;
+  font-weight: 600;
 }

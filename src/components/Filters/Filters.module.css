@@ -1,26 +1,42 @@
+/* /src/components/Filters/Filters.module.css */
 .filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+  background-color: var(--modal-bg);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
 }
 
 .filters input,
 .filters select,
 .filters button {
-  padding: 8px;
-  border: 1px solid var(--text-color, #000000);
-  border-radius: 4px;
-  background-color: var(--bg-color, #ffffff);
-  color: var(--text-color, #000000);
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filters input:focus,
+.filters select:focus {
+  outline: none;
+  border-color: var(--button-bg);
+  box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
 }
 
 .filters button {
-  background-color: var(--button-bg, #007bff);
-  color: var(--button-text, #ffffff);
+  background-color: var(--button-bg);
+  color: var(--button-text);
   border: none;
   cursor: pointer;
+  font-weight: 500;
 }
 
 .filters button:hover {
-  background-color: var(--button-bg-hover, #0056b3);
+  background-color: var(--button-bg-hover);
 }
